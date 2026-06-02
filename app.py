@@ -73,19 +73,19 @@ def send_otp_email(email, otp):
         print("Starting email send...")
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as server:
-        print("Connected to Gmail")
+            print("Connected to Gmail")
+            
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            print("Logged in successfully")
 
-        server.login(EMAIL_SENDER, EMAIL_PASSWORD)
-        print("Logged in successfully")
-
-        server.sendmail(EMAIL_SENDER, email, msg.as_string())
-        print("Email sent successfully")
+            server.sendmail(EMAIL_SENDER, email, msg.as_string())
+            print("Email sent successfully")
         
         return True
 
-except Exception as e:
-    print("EMAIL ERROR:", str(e))
-    return False
+    except Exception as e:
+        print("EMAIL ERROR:", str(e))
+        return False
 
 # ✅ Signup Route
 @app.route('/api/signup', methods=['POST', 'OPTIONS'])

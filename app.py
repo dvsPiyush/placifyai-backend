@@ -60,6 +60,7 @@ def check_content_type():
     if request.method in ['POST', 'PUT', 'PATCH']:
         if request.content_type != 'application/json':
             return jsonify({'message': 'Content-Type must be application/json'}), 415
+
 def send_otp_email(email, otp):
     subject = "PlacifyAI Email Verification OTP"
     body = f"<h2>Welcome to PlacifyAI!</h2><p>Your OTP is: <strong>{otp}</strong></p><p>It will expire in 10 minutes.</p>"
@@ -69,9 +70,9 @@ def send_otp_email(email, otp):
     msg['To'] = email
 
     try:
-    print("Starting email send...")
+        print("Starting email send...")
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as server:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as server:
         print("Connected to Gmail")
 
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
@@ -79,8 +80,8 @@ def send_otp_email(email, otp):
 
         server.sendmail(EMAIL_SENDER, email, msg.as_string())
         print("Email sent successfully")
-
-    return True
+        
+        return True
 
 except Exception as e:
     print("EMAIL ERROR:", str(e))

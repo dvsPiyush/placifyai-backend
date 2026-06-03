@@ -315,7 +315,7 @@ def chatbot():
     bot_reply = None
 
     # 1. Try Hugging Face API
-    try:
+  ''' try:
         HF_API_TOKEN = os.getenv('HF_API_TOKEN')
         api_url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
         headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
@@ -329,10 +329,10 @@ def chatbot():
         else:
             raise Exception(result.get('error', 'Unknown error'))
     except Exception as e:
-        print(f"Hugging Face failed: {e}")
+        print(f"Hugging Face failed: {e}") '''
         # 2. Fallback: Try Gemini (or another API)
         try:
-            model = genai.GenerativeModel('models/gemini-1.5-flash-latest')  # or any model from your list
+            model = genai.GenerativeModel('gemini-1.5-flash')  # or any model from your list
             prompt = f"You are a helpful coding assistant. {message}"
             response = model.generate_content(prompt)
             bot_reply = response.text.strip()
@@ -384,7 +384,8 @@ def upload_resume():
     )
 
     try:
-        model = genai.GenerativeModel('models/gemini-1.5-flash-latest')
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        print("Gemini API Key Loaded:", GEMINI_API_KEY[:10])
         response = model.generate_content(prompt)
         ai_reply = response.text.strip()
 

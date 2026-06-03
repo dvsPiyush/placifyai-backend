@@ -315,24 +315,23 @@ def chatbot():
     bot_reply = None
 
     # 1. Try Hugging Face API
-  ''' try:
-        HF_API_TOKEN = os.getenv('HF_API_TOKEN')
-        api_url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
-        headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
-        payload = {"inputs": f"You are a helpful coding assistant. {message}"}
-        response = requests.post(api_url, headers=headers, json=payload, timeout=30)
-        result = response.json()
-        if isinstance(result, list) and 'generated_text' in result[0]:
-            bot_reply = result[0]['generated_text']
-        elif 'error' in result and "Invalid credentials" not in result['error']:
-            bot_reply = f"Error: {result['error']}"
-        else:
-            raise Exception(result.get('error', 'Unknown error'))
-    except Exception as e:
-        print(f"Hugging Face failed: {e}") '''
-        # 2. Fallback: Try Gemini (or another API)
+  # try:
+   #    api_url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
+    #    headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
+     #   payload = {"inputs": f"You are a helpful coding assistant. {message}"}
+    #    response = requests.post(api_url, headers=headers, json=payload, timeout=30)
+     #   result = response.json()
+      #  if isinstance(result, list) and 'generated_text' in result[0]:
+   #         bot_reply = result[0]['generated_text']
+    #    elif 'error' in result and "Invalid credentials" not in result['error']:
+     #       bot_reply = f"Error: {result['error']}"
+     #   else:
+      #      raise Exception(result.get('error', 'Unknown error'))
+   # except Exception as e:
+    #    print(f"Hugging Face failed: {e}") '''
+     #   # 2. Fallback: Try Gemini (or another API)
         try:
-            model = genai.GenerativeModel('gemini-1.5-flash')  # or any model from your list
+            model = genai.GenerativeModel('gemini-2.0-flash')  # or any model from your list
             prompt = f"You are a helpful coding assistant. {message}"
             response = model.generate_content(prompt)
             bot_reply = response.text.strip()
@@ -384,7 +383,7 @@ def upload_resume():
     )
 
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         print("Gemini API Key Loaded:", GEMINI_API_KEY[:10])
         response = model.generate_content(prompt)
         ai_reply = response.text.strip()

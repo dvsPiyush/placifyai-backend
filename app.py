@@ -306,7 +306,9 @@ def get_random_question():
             return jsonify(random.choice(filtered))
         else:
             return jsonify({"error": "No questions found for this level."}), 404
-    return jsonify(random.choice(questions)@app.route('/chatbot', methods=['POST'])
+    return jsonify(random.choice(questions)
+                   
+@app.route('/chatbot', methods=['POST'])
 def chatbot():
     data = request.get_json()
     username = data.get('username')

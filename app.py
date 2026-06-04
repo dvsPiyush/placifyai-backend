@@ -421,7 +421,38 @@ def upload_resume():
     except Exception as e:
             print("Upload error:", e)  # Add this line
             return jsonify({'error': f'AI evaluation failed: {str(e)}'}), 500
+@app.route("/smtp-test")
+def smtp_test():
+    import smtplib
 
+    try:
+        print("Connecting...")
+
+        server = smtplib.SMTP(
+            "smtp.gmail.com",
+            587,
+            timeout=10
+        )
+
+        print("Connected")
+
+        server.starttls()
+
+        print("TLS started")
+
+        server.login(
+            EMAIL_SENDER,
+            EMAIL_PASSWORD
+        )
+
+        print("Logged in")
+
+        server.quit()
+
+        return "SUCCESS"
+
+    except Exception as e:
+        return str(e)
 @app.route('/resume-scores', methods=['POST'])
 def resume_scores():
     data = request.get_json()

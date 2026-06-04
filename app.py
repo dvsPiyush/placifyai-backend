@@ -58,7 +58,12 @@ def home():
         return "MongoDB Connected Successfully"
     except Exception as e:
         return f"MongoDB Error: {str(e)}"
-
+@app.route("/check-env")
+def check_env():
+    return {
+        "EMAIL_SENDER_EXISTS": bool(os.getenv("EMAIL_SENDER")),
+        "EMAIL_PASSWORD_EXISTS": bool(os.getenv("EMAIL_PASSWORD"))
+    }
 @app.route('/test-email')
 def test_email():
     try:

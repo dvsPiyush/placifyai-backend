@@ -20,12 +20,16 @@ app = Flask(__name__)
 CORS(app, origins= ["http://localhost:3000","https://placifyai-frontend.vercel.app"], supports_credentials=True)
 # Load environment variables
 load_dotenv()
-print("EMAIL_SENDER =", EMAIL_SENDER)
-print("EMAIL_PASSWORD exists =", bool(EMAIL_PASSWORD))
+
 JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'fallback_secret')
 MONGO_URI = os.getenv('MONGO_URI')
+
 EMAIL_SENDER = os.getenv('EMAIL_SENDER')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+print("EMAIL_SENDER =", EMAIL_SENDER)
+print("EMAIL_PASSWORD exists =", bool(EMAIL_PASSWORD))
+
+
 HF_API_TOKEN = os.getenv('HF_API_TOKEN')
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 print("Gemini key exists:", bool(GEMINI_API_KEY))

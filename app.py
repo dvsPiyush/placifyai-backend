@@ -20,6 +20,8 @@ app = Flask(__name__)
 CORS(app, origins= ["http://localhost:3000","https://placifyai-frontend.vercel.app"], supports_credentials=True)
 # Load environment variables
 load_dotenv()
+print("EMAIL_SENDER =", EMAIL_SENDER)
+print("EMAIL_PASSWORD exists =", bool(EMAIL_PASSWORD))
 JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'fallback_secret')
 MONGO_URI = os.getenv('MONGO_URI')
 EMAIL_SENDER = os.getenv('EMAIL_SENDER')
@@ -52,6 +54,23 @@ def home():
         return "MongoDB Connected Successfully"
     except Exception as e:
         return f"MongoDB Error: {str(e)}"
+
+@app.route('/test-email')
+def test_email():
+    try:
+        msg = Message(
+            subject="Test",
+            sender=EMAIL_SENDER,
+            recipients=[EMAIL_SENDER],
+            body="Test Email"
+        )
+
+        mail.send(msg)
+
+        return "Email sent"
+
+    except Exception as e:
+        return str(e)
 
 
 @app.before_request

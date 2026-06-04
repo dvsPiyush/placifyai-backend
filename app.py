@@ -39,6 +39,7 @@ resume_scores_collection = db['resume_scores']  # <-- Add this line
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = EMAIL_SENDER
 app.config['MAIL_PASSWORD'] = EMAIL_PASSWORD
 mail = Mail(app)
@@ -63,31 +64,29 @@ def check_content_type():
             return jsonify({'message': 'Content-Type must be application/json'}), 415
 
 def send_otp_email(email, otp):
-    subject = "PlacifyAI Email Verification OTP"
-    body = f"<h2>Welcome to PlacifyAI!</h2><p>Your OTP is: <strong>{otp}</strong></p><p>It will expire in 10 minutes.</p>"
-    msg = MIMEText(body, "html")
-    msg['Subject'] = subject
-    msg['From'] = EMAIL_SENDER
-    msg['To'] = email
-
     try:
-        print("Starting email send...")
-
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as server:
-            print("Connected to Gmail")
-            
-            server.login(EMAIL_SENDER, EMAIL_PASSWORD)
-            print("Logged in successfully")
-
-            server.sendmail(EMAIL_SENDER, email, msg.as_string())
-            print("Email sent successfully")
+        print("Starting OTP email send via Flask-Mail...")
         
+        subject = "PlacifyAI Email Verification OTP"
+        body = f"<h2>Welcome to PlacifyAI!</h2><p>Your OTP is: <strong>{otp}</strong></p><p>It will expire in 10 minutes.</p>"
+        
+        # Create the message using Flask-Mail's Message class
+        msg = Message(
+            subject=subject,
+            sender=EMAIL_SENDER,
+            recipients=[email]
+        )
+        msg.html = body  # Sets the body format as HTML correctly
+        
+        # Send using your configured mail instance
+        mail.send(msg)
+        print("OTP Email sent successfully")
         return True
 
     except Exception as e:
         print("EMAIL ERROR:", str(e))
         return False
-
+        
 # ✅ Signup Route
 @app.route('/api/signup', methods=['POST', 'OPTIONS'])
 def signup():
